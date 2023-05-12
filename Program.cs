@@ -1,4 +1,5 @@
-﻿using Rock_Paper_Scissors_Multiplayer.Connection.Config;
+﻿using Rock_Paper_Scissors_Multiplayer.Connection;
+using Rock_Paper_Scissors_Multiplayer.Connection.Config;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Rock_Paper_Scissors_Multiplayer
     internal class Program
     {
         static Thread ServerTread = null;
-
+        private static Host Host;
         static void Main(string[] args)
         {
 
@@ -63,18 +64,8 @@ namespace Rock_Paper_Scissors_Multiplayer
                     
                     if (ServerTread == null)
                     {
-                        HostConfig host = CreateHostConfig();
-
-                        ServerTread = new Thread(() =>
-                        {
-
-                            while (true)
-                            {
-                                Thread.Sleep(1000);
-                            }
-
-                        });
-                        ServerTread.Start();
+                        HostConfig hostconfig = CreateHostConfig();
+                        Program.Host = new Host(hostconfig);
                         Console.Clear();
                         menu();
                         return;
@@ -87,8 +78,7 @@ namespace Rock_Paper_Scissors_Multiplayer
                         {
                             if (pressed.Key == ConsoleKey.Y)
                             {
-                                ServerTread.Abort();
-                                ServerTread = null;
+                            
                                 Console.Clear();
                                 menu();
                                 return;
