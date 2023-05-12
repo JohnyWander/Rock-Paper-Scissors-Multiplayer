@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rock_Paper_Scissors_Multiplayer.Connection.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,13 @@ namespace Rock_Paper_Scissors_Multiplayer.Connection
 {
     internal class Host
     {
+        internal Host(HostConfig config)
+        {
+
+        }
+
+
+
+
     }
 }
