@@ -10,6 +10,8 @@ namespace Rock_Paper_Scissors_Multiplayer
     {
         static Thread ServerTread = null;
         private static Host Host;
+
+        private static Client client;
         static void Main(string[] args)
         {
 
@@ -56,16 +58,17 @@ namespace Rock_Paper_Scissors_Multiplayer
                     Console.WriteLine("Choose nickname");
                     string nickname = GetUserInput();
                     
-
+                    Program.client = new Client(endp, nickname);
 
                     break;
 
                 case 2:
                     
-                    if (ServerTread == null)
+                    if (Program.Host  == null)
                     {
                         HostConfig hostconfig = CreateHostConfig();
                         Program.Host = new Host(hostconfig);
+                        
                         Console.Clear();
                         menu();
                         return;
@@ -78,7 +81,8 @@ namespace Rock_Paper_Scissors_Multiplayer
                         {
                             if (pressed.Key == ConsoleKey.Y)
                             {
-                            
+                                Program.Host.StopServer();
+                                Program.Host = null;
                                 Console.Clear();
                                 menu();
                                 return;
@@ -108,7 +112,7 @@ namespace Rock_Paper_Scissors_Multiplayer
         static IPEndPoint GetAdressForConnection()
         {
             Console.WriteLine("Please enter server ip and port like that - \"123.123.123.235:8000\"\n");
-
+            
             
             IPEndPoint? add = null;
 
@@ -117,12 +121,12 @@ namespace Rock_Paper_Scissors_Multiplayer
                 Console.WriteLine("That's not valid address");
             }
 
-
+            
 
             return add;
         }
 
-        static string GetUserInput(string placeholder ="")
+        internal static string GetUserInput(string placeholder ="")
         {
             string input = "";
 
@@ -136,6 +140,13 @@ namespace Rock_Paper_Scissors_Multiplayer
             {
                 return placeholder;
             }
+        }
+
+        internal static ReadOnlySpan<char> GetUserKey()
+        {
+            char key = Console.ReadKey(true).KeyChar;
+
+            return new ReadOnlySpan<char>(new char[] { key });
         }
 
         static HostConfig CreateHostConfig()
@@ -173,6 +184,18 @@ namespace Rock_Paper_Scissors_Multiplayer
             Console.WriteLine("2. Tournament (min 4 players)");
 
             conf.gamemode = (HostConfig.GameMode)int.Parse(GetUserInput());
+
+            if (conf.gamemode == HostConfig.GameMode.Duel) { conf.Expected_Players = 2; }
+            else
+            {
+                Console.WriteLine("Please enter how much players will join tournament (Mode is not yet avaiable!!!)");
+
+                while (!int.TryParse(GetUserInput(), out conf.Expected_Players))
+                {
+                    Console.WriteLine("it's not valid number");
+                };
+
+            }
 
             
             return conf;

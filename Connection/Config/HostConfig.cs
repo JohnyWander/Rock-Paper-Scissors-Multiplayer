@@ -20,7 +20,7 @@ namespace Rock_Paper_Scissors_Multiplayer.Connection.Config
 
         internal GameMode gamemode;
 
-        internal int Expected_Players_For_Tournament;
+        internal int Expected_Players;
 
     }
 }
