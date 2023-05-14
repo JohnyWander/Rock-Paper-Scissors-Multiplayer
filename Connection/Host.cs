@@ -236,7 +236,7 @@ namespace Rock_Paper_Scissors_Multiplayer.Connection
                 if (player1Lost == false && player2Lost == true)
                 {
                     Player1Points++;
-                    Message = $"{serverInstance.clients[1].Nickname} Won! - {serverInstance.clients[0].Nickname} {Player1Points}:{Player2Points} {serverInstance.clients[1].Nickname}";
+                    Message = $"{serverInstance.clients[0].Nickname} Won! - {serverInstance.clients[0].Nickname} {Player1Points}:{Player2Points} {serverInstance.clients[1].Nickname}";
                 }
 
                 foreach(ConnectedClient cl in serverInstance.clients)
